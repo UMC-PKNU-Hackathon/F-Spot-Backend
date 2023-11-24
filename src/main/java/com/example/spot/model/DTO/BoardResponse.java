@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoardRes {
+public class BoardResponse {
     private Long boardId;
     private String nickname;
     private String content;
@@ -26,6 +26,7 @@ public class BoardRes {
 
     private List<String> boardImageUrl; //이미지
 
-    private List<String> tags;
+    private List<String> tags; //태그
+    private List<String> colors;
 
 }

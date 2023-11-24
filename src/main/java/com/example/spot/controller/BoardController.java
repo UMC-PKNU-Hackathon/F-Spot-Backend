@@ -3,6 +3,7 @@ package com.example.spot.controller;
 import com.example.spot.config.exception.BaseException;
 import com.example.spot.config.exception.BaseResponse;
 import com.example.spot.model.DTO.BoardRes;
+import com.example.spot.model.DTO.BoardResponse;
 import com.example.spot.service.BoardService;
 import com.example.spot.utils.JwtService;
 import io.swagger.annotations.Api;
@@ -21,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.example.spot.config.exception.BaseResponseStatus.*;
@@ -44,25 +47,25 @@ public class BoardController {
     private final JwtService jwtService;
 
 
-//    /**
-//     * 모든 게시글(리스트) 조회 api
-//     * [GET] /board/list
-//     *
-//     * @return BaseResponse<List>
-//     */
-//    @GetMapping("/list")
-//    @ApiOperation(value="모든 게시글 조회", notes="모든 게시글(리스트)을 조회한다.")
-//    @ApiResponses(value={@ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
-//            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다."),
-//            @ApiResponse(code = 4023, message = "게시판 조회 실패")})
-//    public BaseResponse<List<BoardRes>> getBoards() {
-//        try {
-//            List<BoardRes> boards = boardService.getBoards();
-//            return new BaseResponse<>(boards);
-//        } catch (Exception e) {
-//            return new BaseResponse<>(RESPONSE_ERROR);
-//        }
-//    }
+    /**
+     * 모든 게시글(리스트) 조회 api
+     * [GET] /board/list
+     *
+     * @return BaseResponse<List>
+     */
+    @GetMapping("/list")
+    @ApiOperation(value="모든 게시글 조회", notes="모든 게시글(리스트)을 조회한다.")
+    @ApiResponses(value={@ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
+            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다."),
+            @ApiResponse(code = 4023, message = "게시판 조회 실패")})
+    public BaseResponse<List<BoardResponse>> getBoards() {
+        try {
+            List<BoardResponse> boards = boardService.getBoards();
+            return new BaseResponse<>(boards);
+        } catch (Exception e) {
+            return new BaseResponse<>(RESPONSE_ERROR);
+        }
+    }
 //
 //    /**
 //     * 나의 게시글 조회 api
