@@ -1,16 +1,17 @@
 package com.example.spot.model.clustering;
 
-import com.example.spot.model.Marker;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public final class KMeansClustering implements Clustering {
     private static final double EARTH_RADIUS = 6371.01;
     private final List<Spot> spots = new ArrayList<>();
 
     @Override
-    public List<Marker> run(List<Marker> markers, double threshold) {
+    public Spots run(List<Marker> markers, double threshold) {
         for (Marker marker : markers) {
             boolean addedToCluster = false;
 
@@ -19,10 +20,10 @@ public final class KMeansClustering implements Clustering {
 
             // 가까운 클러스터가 없을 경우 새로운 클러스터 생성
             if (!addedToCluster) {
-                createCluster(marker);
+                createSpot(marker);
             }
         }
-        return convertToPin();
+        return new Spots(spots);
     }
 
     private boolean isAddedToCluster(Marker marker, boolean addedToSpot, double threshold) {
@@ -36,19 +37,13 @@ public final class KMeansClustering implements Clustering {
         return addedToSpot;
     }
 
-    private void createCluster(Marker marker) {
-        Spot newCluster = new Spot(marker);
-        spots.add(newCluster);
-    }
-
-    private List<Marker> convertToPin() {
-        return spots.stream()
-                .map(Spot::getCenter)
-                .toList();
+    private void createSpot(Marker centerMarker) {
+        Spot newSpot = Spot.builder().center(centerMarker).build();
+        spots.add(newSpot);
     }
 
     private double distance(Marker marker1, Marker marker2) {
-        if (!marker1.getMapType().equals(marker2.getMapType())) {
+        if (!marker1.getTagType().equals(marker2.getTagType())) {
             return Integer.MAX_VALUE;
         }
         return calculateDistance(marker1, marker2);

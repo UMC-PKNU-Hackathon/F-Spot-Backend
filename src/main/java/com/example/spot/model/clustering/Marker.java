@@ -1,23 +1,22 @@
-package com.example.spot.model;
+package com.example.spot.model.clustering;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@Table(name = "marker")
+@Entity
 public final class Marker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double latitude;
     private Double longitude;
-    private MapType mapType;
+    private TagType tagType;
 }
+

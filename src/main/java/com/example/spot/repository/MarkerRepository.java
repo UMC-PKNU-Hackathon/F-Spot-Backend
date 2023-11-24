@@ -1,6 +1,6 @@
 package com.example.spot.repository;
 
-import com.example.spot.model.Marker;
+import com.example.spot.model.clustering.Marker;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,4 +13,6 @@ public interface MarkerRepository {
     List<Marker> findAll();
 
     void add(Marker marker);
+
+    Long delete(Long id);
 }

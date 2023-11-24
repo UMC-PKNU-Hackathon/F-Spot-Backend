@@ -1,27 +1,33 @@
 package com.example.spot.model.clustering;
 
-import com.example.spot.model.Marker;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@Table(name = "spot")
 public class Spot {
     private final Marker center;
-    private final List<Marker> locations = new ArrayList<>();
-
-    public Spot(Marker center) {
-        this.center = center;
-    }
+    private final Integer level;
+    private List<Marker> locations = new ArrayList<>();
 
     public void addLocation(Marker marker) {
         locations.add(marker);
     }
 
-    public Marker getCenter() {
-        return center;
+    public boolean isSameLevel(Integer level) {
+        return level.equals(this.level);
     }
 
-    public List<Marker> getLocations() {
-        return locations;
+    public Marker getCenter() {
+        return center;
     }
 }

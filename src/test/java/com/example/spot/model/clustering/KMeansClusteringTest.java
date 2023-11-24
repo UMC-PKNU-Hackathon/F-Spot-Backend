@@ -1,7 +1,5 @@
 package com.example.spot.model.clustering;
 
-import com.example.spot.model.MapType;
-import com.example.spot.model.Marker;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,7 +18,7 @@ class KMeansClusteringTest {
         //given
         Clustering clustering = new KMeansClustering();
         //when
-        List<Marker> result = clustering.run(markers, 10000);
+        List<Spot> result = clustering.run(markers, 10000);
         //then
         assertThat(result).hasSize(1);
 
@@ -33,7 +31,7 @@ class KMeansClusteringTest {
         //given
         Clustering clustering = new KMeansClustering();
         //when
-        List<Marker> result = clustering.run(markers, 10000);
+        List<Spot> result = clustering.run(markers, 10000);
         //then
         assertThat(result).hasSize(2);
 
@@ -42,26 +40,26 @@ class KMeansClusteringTest {
     public static Stream<Arguments> getClusters() {
         return Stream.of(
                 Arguments.of(
-                        List.of(new Marker(0L, 1.0, 2.0, MapType.TOUR),
-                                new Marker(1L, 1.5, 2.0, MapType.TOUR),
-                                new Marker(2L, .3, 2.0, MapType.TOUR))
+                        List.of(new Marker(0L, 1.0, 2.0, TagType.TOUR),
+                                new Marker(1L, 1.5, 2.0, TagType.TOUR),
+                                new Marker(2L, .3, 2.0, TagType.TOUR))
                 ),
                 Arguments.of(
-                        List.of(new Marker(0L, 1.0, 2.0, MapType.ACCIDENT),
-                                new Marker(1L, 2.5, 3.0, MapType.ACCIDENT),
-                                new Marker(2L, 2.3, 2.0, MapType.ACCIDENT))
+                        List.of(new Marker(0L, 1.0, 2.0, TagType.ACCIDENT),
+                                new Marker(1L, 2.5, 3.0, TagType.ACCIDENT),
+                                new Marker(2L, 2.3, 2.0, TagType.ACCIDENT))
                 ));
     }
 
     public static Stream<Arguments> getDifferentType() {
         return Stream.of(
                 Arguments.of(
-                        List.of(new Marker(0L, 1.0, 2.0, MapType.TOUR),
-                                new Marker(1L, 1.5, 2.0, MapType.ACCIDENT),
-                                new Marker(2L, 1.3, 2.0, MapType.TOUR)),
-                        List.of(new Marker(0L, 1.0, 2.0, MapType.ACCIDENT),
-                                new Marker(3L, 2.5, 3.0, MapType.TOUR),
-                                new Marker(4L, 2.3, 2.0, MapType.ACCIDENT))
+                        List.of(new Marker(0L, 1.0, 2.0, TagType.TOUR),
+                                new Marker(1L, 1.5, 2.0, TagType.ACCIDENT),
+                                new Marker(2L, 1.3, 2.0, TagType.TOUR)),
+                        List.of(new Marker(0L, 1.0, 2.0, TagType.ACCIDENT),
+                                new Marker(3L, 2.5, 3.0, TagType.TOUR),
+                                new Marker(4L, 2.3, 2.0, TagType.ACCIDENT))
                 ));
     }
 }

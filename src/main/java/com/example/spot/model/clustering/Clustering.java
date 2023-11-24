@@ -1,9 +1,13 @@
 package com.example.spot.model.clustering;
 
-import com.example.spot.model.Marker;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+@Configuration
+@ComponentScan(basePackageClasses = SpringApplication.class)
 public interface Clustering {
-    List<Marker> run(List<Marker> markers, double threshold);
+    Spots run(List<Marker> markers, double threshold);
 }

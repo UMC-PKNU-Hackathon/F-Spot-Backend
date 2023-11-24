@@ -24,15 +24,14 @@ public class UserService {
 
     //회원가입
     public JoinRes signUp(JoinRequest joinRequest) throws BaseException {
-        if(userRepository.findByEmail(joinRequest.getEmail()).isPresent()){
+        if (userRepository.findByEmail(joinRequest.getEmail()).isPresent()) {
             throw new BaseException(POST_USERS_EXISTS_EMAIL);
         }
-        if (userRepository.findByNickname(joinRequest.getNickname()).isPresent()){
+        if (userRepository.findByNickname(joinRequest.getNickname()).isPresent()) {
             throw new BaseException(POST_USERS_EXISTS_NICKNAME);
         }
 
-        try{
-
+        try {
             User user = User.builder()
                     .email(joinRequest.getEmail())
                     .password(joinRequest.getPassword())
@@ -45,10 +44,10 @@ public class UserService {
 
             Long id = user.getId();
             String jwt = jwtService.createJwt(id);
-            String resultMessage = "'"+user.getNickname()+"'"+"님 회원가입을 환영합니다!";
-            return new JoinRes(id, user.getEmail(), user.getNickname(),jwt,resultMessage);
+            String resultMessage = "'" + user.getNickname() + "'" + "님 회원가입을 환영합니다!";
+            return new JoinRes(id, user.getEmail(), user.getNickname(), jwt, resultMessage);
 
-        } catch (Exception exception){
+        } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
 
@@ -61,7 +60,7 @@ public class UserService {
         Long id = jwtService.getUserIdx();
 
         if (id == 0) {
-            throw  new BaseException(USERS_EMPTY_USER_ID);
+            throw new BaseException(USERS_EMPTY_USER_ID);
         }
 
         try {
@@ -70,7 +69,7 @@ public class UserService {
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
                 String jwt = jwtService.createJwt(id);
-                String resultMessage = "'"+user.getNickname()+"'"+"님 조회 성공하였습니다!";
+                String resultMessage = "'" + user.getNickname() + "'" + "님 조회 성공하였습니다!";
 
                 MypageDTO mypageDTO = new MypageDTO();
                 mypageDTO.setId(user.getId());
@@ -87,7 +86,7 @@ public class UserService {
                 throw new BaseException(USERS_EMPTY_USER_ID);
             }
         } catch (BaseException exception) {
-            if(exception.getStatus().equals(USERS_EMPTY_USER_ID)){
+            if (exception.getStatus().equals(USERS_EMPTY_USER_ID)) {
                 throw exception;
             } else {
                 throw new BaseException(DATABASE_ERROR);
@@ -98,32 +97,32 @@ public class UserService {
 
     //마이페이지 수정
     @Transactional
-    public MypageDTO mypagefixInfo(String password, String nickname) throws BaseException{
+    public MypageDTO mypagefixInfo(String password, String nickname) throws BaseException {
         Long idx = jwtService.getUserIdx();
 
         if (idx == 0) {
-            throw  new BaseException(USERS_EMPTY_USER_ID);
+            throw new BaseException(USERS_EMPTY_USER_ID);
         }
 
-        try{
+        try {
 
-            Optional<User> userOptional=userRepository.findById(idx);
+            Optional<User> userOptional = userRepository.findById(idx);
 
-            if (userOptional.isPresent()){
+            if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                String jwt=jwtService.createJwt(idx);
+                String jwt = jwtService.createJwt(idx);
 
-                if(password!=null){
+                if (password != null) {
 
                     user.setPassword(password);
                 }
 
 
-                if(nickname!=null){
-                    if (nickname.length()<2 || nickname.length()>20){
-                        throw  new BaseException(POST_USERS_INVALID_NICKNAME);
+                if (nickname != null) {
+                    if (nickname.length() < 2 || nickname.length() > 20) {
+                        throw new BaseException(POST_USERS_INVALID_NICKNAME);
                     }
-                    if (userRepository.findByNickname(nickname).isPresent()){
+                    if (userRepository.findByNickname(nickname).isPresent()) {
                         throw new BaseException(POST_USERS_EXISTS_NICKNAME);
                     }
                     user.setNickname(nickname);
@@ -131,7 +130,7 @@ public class UserService {
 
                 user.setUpdateAt(new Timestamp(System.currentTimeMillis()));
 
-                String resultMessage = "'"+user.getNickname()+"'"+"님 마이페이지 수정 성공하였습니다!";
+                String resultMessage = "'" + user.getNickname() + "'" + "님 마이페이지 수정 성공하였습니다!";
 
                 userRepository.save(user);
 
@@ -149,14 +148,14 @@ public class UserService {
                 throw new BaseException(UPDATE_FAIL_USER);
             }
 
-        }catch (BaseException exception){
-            if(exception.getStatus().equals(UPDATE_FAIL_USER)){
+        } catch (BaseException exception) {
+            if (exception.getStatus().equals(UPDATE_FAIL_USER)) {
                 throw exception;
-            }  else if (exception.getStatus().equals(POST_USERS_INVALID_NICKNAME)) {
+            } else if (exception.getStatus().equals(POST_USERS_INVALID_NICKNAME)) {
                 throw exception;
             } else if (exception.getStatus().equals(POST_USERS_EXISTS_NICKNAME)) {
                 throw exception;
-            } else{
+            } else {
                 throw new BaseException(DATABASE_ERROR);
             }
         }
@@ -172,71 +171,69 @@ public class UserService {
                 User user = userOptional.get();
                 Long id = user.getId();
                 String jwt = jwtService.createJwt(id);
-                String resultMessage = "'"+user.getNickname()+"'"+"님 로그인에 성공하였습니다!";
-                return new LoginRes(id, user.getEmail(),user.getNickname(), jwt,resultMessage);
+                String resultMessage = "'" + user.getNickname() + "'" + "님 로그인에 성공하였습니다!";
+                return new LoginRes(id, user.getEmail(), user.getNickname(), jwt, resultMessage);
 
             } else {
                 throw new BaseException(FAILED_TO_LOGIN);
             }
         } catch (BaseException exception) {
-            if(exception.getStatus().equals(FAILED_TO_LOGIN)){
+            if (exception.getStatus().equals(FAILED_TO_LOGIN)) {
                 throw exception;
-            } else{
+            } else {
                 throw new BaseException(DATABASE_ERROR);
             }
         }
     }
 
     //소셜로그인 추가 정보
-    public LoginRes saveUserSNSInfo(PostExtraReq postExtraReq, Long id) throws BaseException{
-        Optional<User> userOptional=userRepository.findById(id);
+    public LoginRes saveUserSNSInfo(PostExtraReq postExtraReq, Long id) throws BaseException {
+        Optional<User> userOptional = userRepository.findById(id);
 
-        if(userOptional.isPresent()){
-            User user =userOptional.get();
-            if(user.getNickname() != null){
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getNickname() != null) {
                 throw new BaseException(USERS_ALREADY_REGISTER);
             }
         }
 
-        try{
+        try {
 
-            if (userOptional.isPresent()){
+            if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                String jwt=jwtService.createJwt(id);
+                String jwt = jwtService.createJwt(id);
                 user.setNickname(postExtraReq.getNickname());
                 user.setUpdateAt(new Timestamp(System.currentTimeMillis()));
 
-                String resultMessage = "'"+user.getNickname()+"'"+"님 소셜로그인에 성공하였습니다!";
+                String resultMessage = "'" + user.getNickname() + "'" + "님 소셜로그인에 성공하였습니다!";
                 userRepository.save(user);
-                return new LoginRes(id, user.getEmail(), user.getNickname(), jwt,resultMessage);
+                return new LoginRes(id, user.getEmail(), user.getNickname(), jwt, resultMessage);
             } else {
                 throw new BaseException(UPDATE_FAIL_USER);
             }
 
-        }catch (BaseException exception){
-            if(exception.getStatus().equals(UPDATE_FAIL_USER)){
+        } catch (BaseException exception) {
+            if (exception.getStatus().equals(UPDATE_FAIL_USER)) {
                 throw exception;
-            } else{
+            } else {
                 throw new BaseException(DATABASE_ERROR);
             }
         }
     }
 
-    public void deleteByUser (Long id) throws BaseException {
-        try{
+    public void deleteByUser(Long id) throws BaseException {
+        try {
             Optional<User> userOptional = userRepository.findById(id);
-            if (userOptional.isPresent()){
+            if (userOptional.isPresent()) {
                 User user = userOptional.get();
 
                 userRepository.delete(user);
             }
 
-        }catch (Exception exception){
+        } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
-
 
 
 }
