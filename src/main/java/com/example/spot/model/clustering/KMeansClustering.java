@@ -15,7 +15,7 @@ public final class KMeansClustering extends Clustering {
     }
 
     @Override
-    public List<Pin> run(Location location) {
+    public List<Pin> run(Long mapSize) {
         for (Pin pin : pins) {
             boolean addedToCluster = false;
 

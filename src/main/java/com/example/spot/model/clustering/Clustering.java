@@ -1,6 +1,5 @@
 package com.example.spot.model.clustering;
 
-import com.example.spot.model.Location;
 import com.example.spot.model.Pin;
 
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ public abstract class Clustering {
     protected List<Pin> pins;
     protected List<Cluster> clusters = new ArrayList<>();
 
-    public abstract List<Pin> run(Location location);
+    public abstract List<Pin> run(Long mapSize);
 
     protected static class Cluster {
         private final Pin center;
