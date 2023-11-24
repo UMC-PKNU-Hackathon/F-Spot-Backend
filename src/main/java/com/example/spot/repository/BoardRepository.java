@@ -16,6 +16,8 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Optional<Board> findByUserAndBoardId(User user, Long boardId);
     List<Board> findBoardByUser(User user);
 
+    List<Board> findBoardByUserOrderByLikeCntDesc(User user);
+
     // 검색
     List<Board> findByUserNicknameContaining(@Param("keyword") String keyword);
     List<Board> findByContentContaining(@Param("keyword") String keyword);
