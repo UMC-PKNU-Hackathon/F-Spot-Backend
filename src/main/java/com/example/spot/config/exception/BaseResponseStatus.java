@@ -48,6 +48,7 @@ public enum BaseResponseStatus {
     CATEGORIES_EMPTY_CATEGORY(false, 2040, "존재하지 않는 카테고리입니다."),
     POST_LATITUDE_EMPTY(false, 2041, "위도를 입력해주세요."),
     POST_LONGITUDE_EMPTY(false, 2042, "경도를 입력해주세요."),
+    POST_TAGS_EMPTY(false,2043,"태그를 입력해주세요."),
 
 
     // board

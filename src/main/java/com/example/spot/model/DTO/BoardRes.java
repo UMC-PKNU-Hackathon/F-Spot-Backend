@@ -30,4 +30,6 @@ public class BoardRes {
 
     private List<String> boardImageUrl; //이미지
 
+    private List<String> tags;
+
 }

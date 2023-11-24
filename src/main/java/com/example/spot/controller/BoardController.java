@@ -250,7 +250,7 @@ public class BoardController {
             @ApiResponse(code = 2065, message = "파일 등록을 실패하였습니다."),
             @ApiResponse(code = 2066, message = "존재 하지 않거나 삭제된 파일 입니다."),
             @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다.")})
-    public BaseResponse<BoardRes> add( @RequestParam String content, @RequestParam Double latitude, @RequestParam Double longitude, @RequestPart(value = "images", required = false) List<MultipartFile> images)
+    public BaseResponse<BoardRes> add( @RequestParam String content, @RequestParam Double latitude,  @RequestParam Double longitude,@RequestParam(value = "tags") List<String> tags, @RequestPart(value = "images", required = false) List<MultipartFile> images)
     {
         try {
             Long idx = jwtService.getUserIdx();
@@ -276,7 +276,11 @@ public class BoardController {
                 return new BaseResponse<>(POST_LONGITUDE_EMPTY);
             }
 
-            BoardRes boardRes = boardService.add(content, images, idx, latitude, longitude);
+            if (tags.size() == 0){
+                return new BaseResponse<>(POST_TAGS_EMPTY);
+            }
+
+            BoardRes boardRes = boardService.add(content, images, idx, latitude, longitude, tags);
             return new BaseResponse<>(boardRes);
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
@@ -297,7 +301,8 @@ public class BoardController {
             @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다."),
             @ApiResponse(code = 4021, message = "게시판 수정 실패"),
             @ApiResponse(code = 4031, message = "파일 수정 실패")})
-    public BaseResponse<BoardRes> updateBoard(@RequestParam("boardId") Long boardId,@RequestParam String content,
+    public BaseResponse<BoardRes> updateBoard(@RequestParam("boardId") Long boardId,@RequestParam String content,@RequestParam Double latitude,
+                                              @RequestParam Double longitude, @RequestParam(value = "tags") List<String> tags,
                                               @RequestPart(value = "images", required = false) List<MultipartFile> images) {
         try {
             Long idx = jwtService.getUserIdx();
@@ -311,7 +316,7 @@ public class BoardController {
                 return new BaseResponse<>(false, "이미지는 최대 3개까지만 등록할 수 있습니다.", 6000, null);
             }
 
-            BoardRes boardRes = boardService.updateBoard(boardId, content, images);
+            BoardRes boardRes = boardService.updateBoard(boardId, content, images, latitude, longitude, tags);
 
             return new BaseResponse<>(boardRes);
         } catch (BaseException exception){
