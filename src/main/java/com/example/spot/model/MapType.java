@@ -1,5 +1,5 @@
 package com.example.spot.model;
 
 public enum MapType {
-    TOUR,ACCIDENT;
+    TOUR, ACCIDENT, GOOD_RESTAURANT, SNS;
 }

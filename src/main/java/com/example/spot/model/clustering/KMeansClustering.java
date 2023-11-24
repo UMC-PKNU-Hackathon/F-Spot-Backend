@@ -7,7 +7,6 @@ import java.util.List;
 
 public final class KMeansClustering extends Clustering {
     private static final double EARTH_RADIUS = 6371.01;
-
     private final double threshold;
 
     public KMeansClustering(List<Pin> pins, double threshold) {

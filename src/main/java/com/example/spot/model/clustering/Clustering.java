@@ -11,9 +11,9 @@ public abstract class Clustering {
     protected List<Cluster> clusters = new ArrayList<>();
 
     public abstract List<Pin> run(Location location);
+
     protected static class Cluster {
         private final Pin center;
-
         private final List<Pin> locations = new ArrayList<>();
 
         public Cluster(Pin center) {
