@@ -4,6 +4,7 @@ import com.example.spot.config.exception.BaseException;
 import com.example.spot.model.Board;
 import com.example.spot.model.BoardImage;
 import com.example.spot.model.DTO.BoardRes;
+import com.example.spot.model.DTO.BoardResponse;
 import com.example.spot.model.User;
 import com.example.spot.repository.BoardImageRepository;
 import com.example.spot.repository.BoardRepository;
@@ -17,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.example.spot.config.exception.BaseResponseStatus.*;
 
@@ -38,23 +38,45 @@ public class BoardService {
     private final BoardImageRepository boardImageRepository;
 
 
-//    /* 모든 게시글(리스트) 조회 */
-//    public List<BoardRes> getBoards() throws BaseException {
-//        try {
-//            List<BoardRes> boards =
-//                    boardRepository.findAll()
-//                            .stream()
-//                            .map(BoardRes::new)
-//                            .collect(Collectors.toList());
-//
-//            if (boards.isEmpty()) {
-//                throw new BaseException(SHOW_FAIL_BOARD);
-//            }
-//            return boards;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+    /* 모든 게시글(리스트) 조회 */
+    public List<BoardResponse> getBoards() throws BaseException {
+        try {
+            List<Board> boards = boardRepository.findAllByOrderByLikeCntDesc();
+
+            if (boards.isEmpty()) {
+                throw new BaseException(SHOW_FAIL_BOARD);
+            }
+
+            List<BoardResponse> boardResponses = new ArrayList<>();
+            for (Board board : boards) {
+                BoardResponse boardResponse = new BoardResponse();
+                boardResponse.setBoardId(board.getBoardId());
+                boardResponse.setNickname(board.getUser().getNickname());
+                boardResponse.setContent(board.getContent());
+                boardResponse.setHits(board.getHits());
+                boardResponse.setLikeCnt(board.getLikeCnt());
+                boardResponse.setCreatedAt(board.getCreatedAt());
+                boardResponse.setUpdatedAt(board.getUpdatedAt());
+                boardResponse.setBoardImageUrl(board.getBoardImageUrl());
+                boardResponse.setLatitude(board.getLatitude());
+                boardResponse.setLongitude(board.getLongitude());
+                boardResponse.setTags(board.getTags());
+
+                //색상 코드 반환
+                boardResponse.setColors(colorToTags(board.getTags()));
+
+                boardResponses.add(boardResponse);
+            }
+
+            return boardResponses;
+        } catch (BaseException exception) {
+            if(exception.getStatus().equals(SHOW_FAIL_BOARD)){
+                throw exception;
+            } else {
+                throw new BaseException(DATABASE_ERROR);
+            }
+        }
+    }
 //
 //    /* 나의 게시글 조회 */
 //    public List<BoardRes> getMyBoards(Long idx) throws BaseException {
@@ -398,6 +420,24 @@ public class BoardService {
             // 이미지 삭제
             boardImageRepository.delete(image);
         }
+    }
+
+    private List<String> colorToTags(List<String> tags) {
+        HashMap<String, String> tagMapping = new HashMap<>();
+        tagMapping.put("Accident", "#ffb3ba");
+        tagMapping.put("GoodRestaurant", "#ffdfba");
+        tagMapping.put("Tour", "#baffc9");
+        tagMapping.put("SNS", "#bae1ff");
+
+        List<String> colorTags = new ArrayList<>();
+        for (String tag : tags) {
+            if (tagMapping.containsKey(tag)) {
+                String color = tagMapping.get(tag);
+                colorTags.add(color);
+            }
+        }
+
+        return colorTags;
     }
 
 
