@@ -2,7 +2,6 @@ package com.example.spot.controller;
 
 import com.example.spot.config.exception.BaseException;
 import com.example.spot.config.exception.BaseResponse;
-import com.example.spot.model.Board;
 import com.example.spot.model.DTO.BoardRes;
 import com.example.spot.model.DTO.BoardResponse;
 import com.example.spot.service.BoardService;
@@ -23,8 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.example.spot.config.exception.BaseResponseStatus.*;
@@ -33,16 +30,10 @@ import static com.example.spot.config.exception.BaseResponseStatus.*;
 @RestController
 @RequiredArgsConstructor
 @Controller
-@Api(tags = "Board", description = "사용자 커뮤니티 게시판")
+@Api(tags = "Board", description = "마커")
 @RequestMapping("/board")
 public class BoardController {
-    /**
-     * 조회 - get
-     * 검색 - search(Controller & Service) / find(Repository)
-     * 생성 - save
-     * 수정 - update
-     * 삭제 - delete
-     */
+
 
     private final BoardService boardService;
     private final JwtService jwtService;
@@ -352,7 +343,7 @@ public class BoardController {
     //http://localhost:8080/board/images/7f658d91-ef68-4b59-a381-af5bc9938768_fighting.png
     @ResponseBody
     @GetMapping("/board/images/{imageName}")
-    @ApiOperation(value="리뷰 이미지 조회", notes="이미지 조회할 때 url을 여기다가 붙여서 get 보내셈 \n 근데, localhost를 15.164.139.103으로 변경해야함!")
+    @ApiOperation(value="리뷰 이미지 조회", notes="이미지 조회할 때 url을 여기다가 붙여서 get 보내셈 \n 근데, localhost를 (?)으로 변경해야함!")
     public ResponseEntity<byte[]> getReviewImage(@PathVariable String imageName) {
         String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\templates\\image\\";
         String imagePath = projectPath + imageName;
