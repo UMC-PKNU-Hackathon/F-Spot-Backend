@@ -2,7 +2,7 @@ spring:
 
   data:
     redis:
-      port: 6379
+      port:
       host:
       password:
 
@@ -50,7 +50,7 @@ spring:
 
 
 jwt:
-  secretKey: 
+  secretKey:
 
   access:
     expiration: 3600000 # 1??(60?) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
