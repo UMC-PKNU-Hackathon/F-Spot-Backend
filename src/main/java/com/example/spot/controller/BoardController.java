@@ -124,108 +124,77 @@ public class BoardController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
-//
-//    // ==================================================================================
-//
-//    /**
-//     * 게시글 정렬 api
-//     * [GET] /board/
-//     *
-//     * @return BaseResponse<List>
-//     */
-//    /* 정렬 */
-//    @GetMapping("/list-order-by-hits")
-//    @ApiOperation(value="게시판 조건 정렬 API", notes="조회수 높은 순 게시판 정렬")
-//    @ApiResponses(value={@ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
-//            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다."),
-//            @ApiResponse(code = 4023, message = "게시판 조회 실패")})
-//    public BaseResponse<List<BoardRes>> getBoardByOrderByHitsDesc() {
-//        try {
-//            List<BoardRes> getBoardRes  = boardService.getBoardByOrderByHitsDesc();
-//            return new BaseResponse<>(getBoardRes);
-//        } catch (Exception e) {
-//            return new BaseResponse<>(RESPONSE_ERROR);
-//        }
-//    }
-//
-//    @GetMapping("/list-order-by-like")
-//    @ApiOperation(value="게시판 조건 정렬 API", notes="좋아요 높은 순 게시판 정렬")
-//    @ApiResponses(value={@ApiResponse(code =3000,message = "값을 불러오는데 실패하였습니다."),
-//            @ApiResponse(code =4000,message = "데이터베이스 연결에 실패하였습니다."),
-//            @ApiResponse(code =4023,message = "게시판 조회 실패")})
-//    public BaseResponse<List<BoardRes>> getBoardByOrderByLikeCntDesc() {
-//        try {
-//            List<BoardRes> getBoardRes  = boardService.getBoardByOrderByLikeCntDesc();
-//            return new BaseResponse<>(getBoardRes);
-//        } catch (Exception e) {
-//            return new BaseResponse<>(RESPONSE_ERROR);
-//        }
-//    }
-//
-//
-//
-//    // ==================================================================================
-//
-//    /**
-//     * 키워드(in 작성자) 리스트 검색 api
-//     * 키워드(in 제목) 리스트 검색 api
-//     * 키워드(in 본문) 리스트 검색 api
-//     * [GET] /board/search-board-of?keyword={keyword}
-//     *
-//     *  @return BaseResponse<List>
-//     */
-//    /* 검색 */
-//    @GetMapping("/search-board-of-writer")
-//    @ApiOperation(value="작성자 검색", notes="작성자로 게시글을 검색한다.")
-//    @ApiResponses(value={@ApiResponse(code = 2000, message = "입력값을 확인해주세요."),
-//            @ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
-//            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다."),
-//            @ApiResponse(code = 4023, message = "게시판 조회 실패")})
-//    public BaseResponse<List<BoardRes>> getBoardByUserId(@RequestParam("keyword") String keyword) {
-//        try {
-//            if (keyword == null) {
-//                return new BaseResponse<>(REQUEST_ERROR);
-//            }
-//            List<BoardRes> boardList = boardService.searchBoardByUserNickname(keyword);
-////            if (boardList == null) {
-////                return new BaseResponse<>(BOARD_NOT_EXISTS);
-////            }
-//            return new BaseResponse<>(boardList);
-//        } catch (Exception exception) {
-//            return new BaseResponse<>(RESPONSE_ERROR);
-//        }
-////        try {
-////            if (writer == null) {
-////                return new BaseResponse<>(REQUEST_ERROR);
-////            }
-////            List<BoardRes> board_list = boardService.searchBoardByUserNickname(writer);
-////            return ResponseEntity.ok().body(board_list);
-////        } catch (Exception e) {
-////            return ResponseEntity.badRequest().build();
-////        }
-//    }
-//
-//
-//    @GetMapping("/search-board-of-content")
-//    @ApiOperation(value = "본문 검색", notes = "본문으로 게시글을 검색한다.")
-//    @ApiResponses(value={@ApiResponse(code = 2000, message = "입력값을 확인해주세요."),
-//            @ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
-//            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다."),
-//            @ApiResponse(code = 4023, message = "게시판 조회 실패")})
-//    public BaseResponse<List<BoardRes>> searchBoardByContent(@RequestParam("keyword") String keyword) {
-//        try {
-//            if (keyword == null) {
-//                return new BaseResponse<>(REQUEST_ERROR);
-//            }
-//            List<BoardRes> boardList  = boardService.searchBoardByContent(keyword);
-////            if (board == null) {
-////                return new BaseResponse<>(BOARD_NOT_EXISTS);
-////            }
-//            return new BaseResponse<>(boardList);
-//        } catch (Exception exception) {
-//            return new BaseResponse<>(RESPONSE_ERROR);
-//        }
-//    }
+
+    // ==================================================================================
+
+    /**
+     * 게시글 정렬 api
+     * [GET] /board/
+     *
+     * @return BaseResponse<List>
+     */
+    /* 정렬 */
+    @GetMapping("/list-order-by-hits")
+    @ApiOperation(value="게시판 조건 정렬 API", notes="조회수 높은 순 게시판 정렬")
+    @ApiResponses(value={@ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
+            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다."),
+            @ApiResponse(code = 4023, message = "게시판 조회 실패")})
+    public BaseResponse<List<BoardResponse>> getBoardByOrderByHitsDesc() {
+        try {
+            List<BoardResponse> getBoardRes  = boardService.getBoardByOrderByHitsDesc();
+            return new BaseResponse<>(getBoardRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+
+    /**
+     * 키워드(in 작성자) 리스트 검색 api
+     * 키워드(in 제목) 리스트 검색 api
+     * 키워드(in 본문) 리스트 검색 api
+     * [GET] /board/search-board-of?keyword={keyword}
+     *
+     *  @return BaseResponse<List>
+     */
+    /* 검색 */
+    @GetMapping("/search-board-of-writer")
+    @ApiOperation(value="작성자 검색", notes="작성자로 게시글을 검색한다.")
+    @ApiResponses(value={@ApiResponse(code = 2000, message = "입력값을 확인해주세요."),
+            @ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
+            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다."),
+            @ApiResponse(code = 4023, message = "게시판 조회 실패")})
+    public BaseResponse<List<BoardResponse>> getBoardByUserId(@RequestParam("keyword") String keyword) {
+        try {
+            if (keyword == null) {
+                return new BaseResponse<>(REQUEST_ERROR);
+            }
+            List<BoardResponse> boardList = boardService.searchBoardByUserNickname(keyword);
+
+            return new BaseResponse<>(boardList);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    @GetMapping("/search-board-of-content")
+    @ApiOperation(value = "본문 검색", notes = "본문으로 게시글을 검색한다.")
+    @ApiResponses(value={@ApiResponse(code = 2000, message = "입력값을 확인해주세요."),
+            @ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
+            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다."),
+            @ApiResponse(code = 4023, message = "게시판 조회 실패")})
+    public BaseResponse<List<BoardResponse>> searchBoardByContent(@RequestParam("keyword") String keyword) {
+        try {
+            if (keyword == null) {
+                return new BaseResponse<>(REQUEST_ERROR);
+            }
+            List<BoardResponse> boardList  = boardService.searchBoardByContent(keyword);
+
+            return new BaseResponse<>(boardList);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
 
     // ==================================================================================
