@@ -24,12 +24,17 @@ public class User {
     private String password; //비밀번호
     private String nickname; //사용자 이름
 
-
-    private String type;
+    private String type; //소셜타입
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Timestamp createAt;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Timestamp updateAt;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Board> boards;     // 작성글
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BoardLike> boardLikes; // 유저가 누른 게시판 좋아요 목록
 }
