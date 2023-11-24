@@ -60,6 +60,10 @@ public class Board {
     @Column(name = "longitude")
     private Double longitude;
 
+    @OneToMany(mappedBy = "board", orphanRemoval = true)
+    private List<Comment> comments; // 댓글
+    private Integer commentCnt;     // 댓글 수
+
     // BoardImage 객체들의 URL만을 가져와 boardImageUrl 필드를 채우는 메서드
     @PostLoad
     public void fillBoardImageUrl() {
@@ -78,6 +82,15 @@ public class Board {
 
     public void likeChange(Integer likeCnt) {
         this.likeCnt = likeCnt;
+    }
+
+    public void commentChange(Integer commentCnt) {
+        this.commentCnt = commentCnt;
+    }
+
+    public Integer getCommentCnt() {
+
+        return commentCnt != null ? commentCnt : 0;
     }
 
 }
