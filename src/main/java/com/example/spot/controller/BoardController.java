@@ -283,8 +283,7 @@ public class BoardController {
             if (longitude == null || longitude.equals("")){
                 return new BaseResponse<>(POST_LONGITUDE_EMPTY);
             }
-
-
+            BoardRes boardRes = boardService.add(content, images, idx, latitude, longitude);
 
             return new BaseResponse<>(boardRes);
         } catch (BaseException exception){
