@@ -11,6 +11,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.example.spot.config.exception.BaseResponseStatus.*;
 
@@ -39,6 +45,8 @@ public class BoardController {
      * 수정 - update
      * 삭제 - delete
      */
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     private final BoardService boardService;
     private final JwtService jwtService;
@@ -277,6 +285,24 @@ public class BoardController {
             }
 
             BoardRes boardRes = boardService.add(content, images, idx, latitude, longitude);
+
+
+            Date createdAt = boardRes.getCreatedAt();
+            double timestamp = (double) createdAt.getTime() / 1000.0;
+
+            ZSetOperations<String, String> zopDate = redisTemplate.opsForZSet();
+            zopDate.add("mark-date", boardRes.getBoardId().toString(), timestamp);
+            redisTemplate.expire(boardRes.getBoardId().toString(), 1, TimeUnit.MINUTES);
+
+            ZSetOperations<String, String> zopLike = redisTemplate.opsForZSet();
+            zopLike.add("mark-like", boardRes.getBoardId().toString(), timestamp);
+            redisTemplate.expire(boardRes.getBoardId().toString(), 1, TimeUnit.MINUTES);
+
+            ZSetOperations<String, String> zopTag = redisTemplate.opsForZSet();
+            zopLike.add("mark-"+boardRes.getBoardTag(), boardRes.getBoardId().toString(), timestamp);
+            redisTemplate.expire(boardRes.getBoardId().toString(), 1, TimeUnit.MINUTES);
+
+
             return new BaseResponse<>(boardRes);
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
