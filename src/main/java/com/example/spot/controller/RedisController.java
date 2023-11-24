@@ -29,85 +29,82 @@ public class RedisController {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
     @Autowired
-    private BoardController boardController;
-    @Autowired
     private BoardService boardService;
 
-    @ApiOperation(value="모든 게시글 조회", notes="모든 게시글(리스트)을 조회한다.")
-    @ApiResponses(value={@ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
-            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다."),
-            @ApiResponse(code = 4023, message = "게시판 조회 실패")})
+    @ApiOperation(value="좋아요 분류", notes="좋아요순으로 분류해서 조회합니다.")
     @GetMapping("/sorting-request-like")
-    public BaseResponse<BoardResponse> getSortingKeyLike() {
+    public BaseResponse<List<BoardResponse>> getSortingKeyLike() {
         ZSetOperations<String, String> zop_like = redisTemplate.opsForZSet();
 
         Set<String> values = zop_like.range("mark-like", 0, -1);
-
+        List<BoardResponse> Boards = new ArrayList<>();
         for (String boardIdString : values) {
             try {
                 Long boardId = Long.parseLong(boardIdString);
-                BaseResponse<BoardResponse> responseEntity = boardController.getBoardByBoardId(boardId);
 
-                if (boardId == null) {
+                if (boardId == null)
                     return new BaseResponse<>(REQUEST_ERROR);
-                }
+
 
                 BoardResponse board = boardService.getBoardByBoardId(boardId, boardId);
-                return new BaseResponse<>(board);
+                Boards.add(board);
+
             } catch (BaseException e) {
                 return new BaseResponse<>(e.getStatus());
             }
         }
-        return new BaseResponse<>(null);
+        return new BaseResponse<>(Boards);
     }
 
 
-
+    @ApiOperation(value="작성날짜 분류", notes="작성한 날짜순으로 분류해서 조회합니다.")
     @GetMapping("/sorting-request-date")
-    public BaseResponse<BoardResponse> getSortingKeyDate() {
+    public BaseResponse<List<BoardResponse>> getSortingKeyDate() {
         ZSetOperations<String, String> zop_date = redisTemplate.opsForZSet();
 
         Set<String> values = zop_date.range("mark-date", 0, -1);
-            for (String boardIdString : values) {
-                try {
-                    Long boardId = Long.parseLong(boardIdString);
-                    BaseResponse<BoardResponse> responseEntity = boardController.getBoardByBoardId(boardId);
-
-                    if (boardId == null) {
-                        return new BaseResponse<>(REQUEST_ERROR);
-                    }
-
-                    BoardResponse board = boardService.getBoardByBoardId(boardId, boardId);
-                    return new BaseResponse<>(board);
-                } catch (BaseException e) {
-                    return new BaseResponse<>(e.getStatus());
-                }
-            }
-        return new BaseResponse<>(null);
-        }
-
-    @GetMapping("/sorting-request-tag")
-    public BaseResponse<BoardResponse> getSortingKeyDate(@PathVariable String tagname) {
-        ZSetOperations<String, String> zop_date = redisTemplate.opsForZSet();
-
-        Set<String> values = zop_date.range("mark-"+tagname, 0, -1);
-
+        List<BoardResponse> Boards = new ArrayList<>();
         for (String boardIdString : values) {
             try {
                 Long boardId = Long.parseLong(boardIdString);
-                BaseResponse<BoardResponse> responseEntity = boardController.getBoardByBoardId(boardId);
 
-                if (boardId == null) {
+                if (boardId == null)
                     return new BaseResponse<>(REQUEST_ERROR);
-                }
+
 
                 BoardResponse board = boardService.getBoardByBoardId(boardId, boardId);
-                return new BaseResponse<>(board);
+                Boards.add(board);
+
             } catch (BaseException e) {
                 return new BaseResponse<>(e.getStatus());
             }
         }
-        return new BaseResponse<>(null);
+        return new BaseResponse<>(Boards);
+    }
+
+    @ApiOperation(value="태그별 분류", notes="해당하는 태그만 분류해서 조회합니다.")
+    @GetMapping("/sorting-request-tag/{tagname}")
+    public BaseResponse<List<BoardResponse>> getSortingKeyDate(@PathVariable String tagname) {
+        ZSetOperations<String, String> zop_date = redisTemplate.opsForZSet();
+
+        Set<String> values = zop_date.range("mark-"+tagname, 0, -1);
+        List<BoardResponse> Boards = new ArrayList<>();
+        for (String boardIdString : values) {
+            try {
+                Long boardId = Long.parseLong(boardIdString);
+
+                if (boardId == null)
+                    return new BaseResponse<>(REQUEST_ERROR);
+
+
+                BoardResponse board = boardService.getBoardByBoardId(boardId, boardId);
+                Boards.add(board);
+
+            } catch (BaseException e) {
+                return new BaseResponse<>(e.getStatus());
+            }
+        }
+        return new BaseResponse<>(Boards);
     }
 
 }
