@@ -2,13 +2,13 @@ spring:
 
   data:
     redis:
-      port:
+      port: 6379
       host:
       password:
 
   datasource:
     url:
-    username:
+    username: admin
     password:
 
   jpa:
