@@ -18,9 +18,9 @@ class KMeansClusteringTest {
     @DisplayName("임계값 안에 들어간다면, 모두 하나의 군집이 되어야 한다.")
     void 군집_통일_검사(List<Marker> markers) {
         //given
-        Clustering clustering = new KMeansClustering(markers, 100000);
+        Clustering clustering = new KMeansClustering();
         //when
-        List<Marker> result = clustering.run(100L);
+        List<Marker> result = clustering.run(markers, 10000);
         //then
         assertThat(result).hasSize(1);
 
@@ -31,9 +31,9 @@ class KMeansClusteringTest {
     @DisplayName("MapType이 다르다면, 다른 군집이 되어야한다.")
     void 군집_분리_검사(List<Marker> markers) {
         //given
-        Clustering clustering = new KMeansClustering(markers, 100000);
+        Clustering clustering = new KMeansClustering();
         //when
-        List<Marker> result = clustering.run(100L);
+        List<Marker> result = clustering.run(markers, 10000);
         //then
         assertThat(result).hasSize(2);
 
