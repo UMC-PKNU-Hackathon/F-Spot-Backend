@@ -166,78 +166,134 @@ public class BoardService {
             }
         }
     }
-//
-//    /* 게시글 정렬 */
-//    public List<BoardRes> getBoardByOrderByHitsDesc() throws BaseException { // 조회 수
-//        try {
-//            List<BoardRes> getBoards =
-//                    boardRepository.findAllByOrderByHitsDesc()
-//                            .stream()
-//                            .map(BoardRes::new)
-//                            .toList();
-//
-//            if (getBoards.isEmpty()) {
-//                throw new BaseException(SHOW_FAIL_BOARD);
-//            }
-//            return getBoards;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-//
-//    public List<BoardRes> getBoardByOrderByLikeCntDesc() throws BaseException { // 좋아요
-//        try {
-//            List<BoardRes> getBoards =
-//                    boardRepository.findAllByOrderByLikeCntDesc()
-//                            .stream()
-//                            .map(BoardRes::new)
-//                            .toList();
-//
-//            if (getBoards.isEmpty()) {
-//                throw new BaseException(SHOW_FAIL_BOARD);
-//            }
-//            return getBoards;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-//
-//
-//    /* 게시글 검색 */
-//    public List<BoardRes> searchBoardByUserNickname(String writer) throws BaseException {
-//        try {
-//            List<BoardRes> boardList = boardRepository.findByUserNicknameContaining(writer)
-//                    .stream()
-//                    .map(BoardRes::new)
-//                    .toList();
-//
-//            if (boardList.isEmpty()) {
-//                throw new BaseException(SHOW_FAIL_BOARD);
-//            }
-//            return boardList;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-//
-//    public List<BoardRes> searchBoardByContent(String keyword) throws BaseException {
-//        try {
-//            List<BoardRes> boardList = boardRepository.findByContentContaining(keyword)
-//                    .stream()
-//                    .map(BoardRes::new)
-//                    .toList();
-//
-//            if (boardList.isEmpty()) {
-//                throw new BaseException(SHOW_FAIL_BOARD);
-//            }
-//            return boardList;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+
+    /* 게시글 정렬 */
+    public List<BoardResponse> getBoardByOrderByHitsDesc() throws BaseException { // 조회 수
+        try {
+
+            List<Board> boards = boardRepository.findAllByOrderByHitsDesc();
+
+            if (boards.isEmpty()) {
+                throw new BaseException(SHOW_FAIL_BOARD);
+            }
+
+            List<BoardResponse> boardResponses = new ArrayList<>();
+            for (Board board : boards) {
+                BoardResponse boardResponse = new BoardResponse();
+                boardResponse.setBoardId(board.getBoardId());
+                boardResponse.setNickname(board.getUser().getNickname());
+                boardResponse.setContent(board.getContent());
+                boardResponse.setHits(board.getHits());
+                boardResponse.setLikeCnt(board.getLikeCnt());
+                boardResponse.setCreatedAt(board.getCreatedAt());
+                boardResponse.setUpdatedAt(board.getUpdatedAt());
+                boardResponse.setBoardImageUrl(board.getBoardImageUrl());
+                boardResponse.setLatitude(board.getLatitude());
+                boardResponse.setLongitude(board.getLongitude());
+                boardResponse.setTags(board.getTags());
+
+                //색상 코드 반환
+                boardResponse.setColors(colorToTags(board.getTags()));
+
+                boardResponses.add(boardResponse);
+            }
+
+            return boardResponses;
+
+        } catch (BaseException exception) {
+            if(exception.getStatus().equals(SHOW_FAIL_BOARD)){
+                throw exception;
+            } else {
+                throw new BaseException(DATABASE_ERROR);
+            }
+        }
+    }
 
 
-    // ==================================================================================
+    /* 게시글 검색 */
+    public List<BoardResponse> searchBoardByUserNickname(String writer) throws BaseException {
+        try {
+
+            List<Board> boards = boardRepository.findAllByOrderByHitsDesc();
+
+            if (boards.isEmpty()) {
+                throw new BaseException(SHOW_FAIL_BOARD);
+            }
+
+            List<BoardResponse> boardResponses = new ArrayList<>();
+            for (Board board : boards) {
+                BoardResponse boardResponse = new BoardResponse();
+                boardResponse.setBoardId(board.getBoardId());
+                boardResponse.setNickname(board.getUser().getNickname());
+                boardResponse.setContent(board.getContent());
+                boardResponse.setHits(board.getHits());
+                boardResponse.setLikeCnt(board.getLikeCnt());
+                boardResponse.setCreatedAt(board.getCreatedAt());
+                boardResponse.setUpdatedAt(board.getUpdatedAt());
+                boardResponse.setBoardImageUrl(board.getBoardImageUrl());
+                boardResponse.setLatitude(board.getLatitude());
+                boardResponse.setLongitude(board.getLongitude());
+                boardResponse.setTags(board.getTags());
+
+                //색상 코드 반환
+                boardResponse.setColors(colorToTags(board.getTags()));
+
+                boardResponses.add(boardResponse);
+            }
+
+            return boardResponses;
+
+        } catch (BaseException exception) {
+            if(exception.getStatus().equals(SHOW_FAIL_BOARD)){
+                throw exception;
+            } else {
+                throw new BaseException(DATABASE_ERROR);
+            }
+
+        }
+    }
+
+    public List<BoardResponse> searchBoardByContent(String keyword) throws BaseException {
+        try {
+
+            List<Board> boards = boardRepository.findByContentContaining(keyword);
+
+            if (boards.isEmpty()) {
+                throw new BaseException(SHOW_FAIL_BOARD);
+            }
+
+            List<BoardResponse> boardResponses = new ArrayList<>();
+            for (Board board : boards) {
+                BoardResponse boardResponse = new BoardResponse();
+                boardResponse.setBoardId(board.getBoardId());
+                boardResponse.setNickname(board.getUser().getNickname());
+                boardResponse.setContent(board.getContent());
+                boardResponse.setHits(board.getHits());
+                boardResponse.setLikeCnt(board.getLikeCnt());
+                boardResponse.setCreatedAt(board.getCreatedAt());
+                boardResponse.setUpdatedAt(board.getUpdatedAt());
+                boardResponse.setBoardImageUrl(board.getBoardImageUrl());
+                boardResponse.setLatitude(board.getLatitude());
+                boardResponse.setLongitude(board.getLongitude());
+                boardResponse.setTags(board.getTags());
+
+                //색상 코드 반환
+                boardResponse.setColors(colorToTags(board.getTags()));
+
+                boardResponses.add(boardResponse);
+            }
+
+            return boardResponses;
+
+        } catch (BaseException exception) {
+            if(exception.getStatus().equals(SHOW_FAIL_BOARD)){
+                throw exception;
+            } else {
+                throw new BaseException(DATABASE_ERROR);
+            }
+        }
+    }
+
 
 
     /* 게시글 추가 */
