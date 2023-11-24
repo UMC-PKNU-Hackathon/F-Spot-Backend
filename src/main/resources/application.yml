@@ -2,14 +2,14 @@ spring:
 
   data:
     redis:
-      port: 6379
-      host: 13.124.152.41
-      password: spot1234!
+      port:
+      host:
+      password:
 
   datasource:
-    url: jdbc:mysql://spot-db.c4xdcqwxcink.ap-northeast-2.rds.amazonaws.com:3306/spot
-    username: admin
-    password: spot1234!
+    url:
+    username:
+    password:
 
   jpa:
     hibernate:
@@ -24,8 +24,8 @@ spring:
       client:
         registration:
           kakao:
-            client-id: 8e766924532fe4a01ff93f1aa3d56b88
-            client-secret: Qk7XkVtgAEATTEDxHzHxAP25L7COVsDk
+            client-id:
+            client-secret:
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             client-authentication-method: POST
             authorization-grant-type: authorization_code
@@ -50,7 +50,7 @@ spring:
 
 
 jwt:
-  secretKey: dsdfnndfgjnfnjerhrgndfjvdfj3y4t64584545455151612ggjfjjfjvjf
+  secretKey:
 
   access:
     expiration: 3600000 # 1??(60?) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
