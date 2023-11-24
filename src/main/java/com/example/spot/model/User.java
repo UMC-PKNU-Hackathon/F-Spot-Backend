@@ -37,4 +37,14 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BoardLike> boardLikes; // 유저가 누른 게시판 좋아요 목록
+
+    private Integer receivedLikeCnt; // 유저가 받은 좋아요 개수 (본인 제외)
+    public void likeChange(Integer receivedLikeCnt) {
+        this.receivedLikeCnt = receivedLikeCnt;
+    }
+
+    public Integer getReceivedLikeCnt() {
+        // Return 0 if receivedLikeCnt is null
+        return receivedLikeCnt != null ? receivedLikeCnt : 0;
+    }
 }
