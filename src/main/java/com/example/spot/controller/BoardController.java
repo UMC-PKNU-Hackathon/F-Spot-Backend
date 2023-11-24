@@ -284,23 +284,6 @@ public class BoardController {
                 return new BaseResponse<>(POST_LONGITUDE_EMPTY);
             }
 
-            BoardRes boardRes = boardService.add(content, images, idx, latitude, longitude);
-
-
-            Date createdAt = boardRes.getCreatedAt();
-            double timestamp = (double) createdAt.getTime() / 1000.0;
-
-            ZSetOperations<String, String> zopDate = redisTemplate.opsForZSet();
-            zopDate.add("mark-date", boardRes.getBoardId().toString(), timestamp);
-            redisTemplate.expire(boardRes.getBoardId().toString(), 1, TimeUnit.MINUTES);
-
-            ZSetOperations<String, String> zopLike = redisTemplate.opsForZSet();
-            zopLike.add("mark-like", boardRes.getBoardId().toString(), timestamp);
-            redisTemplate.expire(boardRes.getBoardId().toString(), 1, TimeUnit.MINUTES);
-
-            ZSetOperations<String, String> zopTag = redisTemplate.opsForZSet();
-            zopLike.add("mark-"+boardRes.getBoardTag(), boardRes.getBoardId().toString(), timestamp);
-            redisTemplate.expire(boardRes.getBoardId().toString(), 1, TimeUnit.MINUTES);
 
 
             return new BaseResponse<>(boardRes);
