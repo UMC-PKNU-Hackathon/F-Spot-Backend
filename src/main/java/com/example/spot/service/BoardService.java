@@ -176,7 +176,7 @@ public class BoardService {
 
 
     /* 게시글 추가 */
-    public BoardRes add(String content, List<MultipartFile> images, Long idx, Double latitude, Double longitude) throws BaseException {
+    public BoardRes add(String content, List<MultipartFile> images, Long idx, Double latitude, Double longitude, List<String> tags) throws BaseException {
         try {
             Optional<User> optUser = userRepository.findById(idx);
 
@@ -189,6 +189,7 @@ public class BoardService {
                 board.setUser(user);
                 board.setLatitude(latitude);
                 board.setLongitude(longitude);
+                board.setTags(tags);
 
                 if (images != null) {
                     for (MultipartFile imageFile : images) {
@@ -212,6 +213,7 @@ public class BoardService {
                 boardRes.setBoardImageUrl(board.getBoardImageUrl());
                 boardRes.setLatitude(board.getLatitude());
                 boardRes.setLongitude(board.getLongitude());
+                boardRes.setTags(board.getTags());
 
                 return boardRes;
 
@@ -230,7 +232,7 @@ public class BoardService {
 
     /* 게시글 수정 */
     @Transactional
-    public BoardRes updateBoard(Long boardId, String content, List<MultipartFile> images) throws BaseException {
+    public BoardRes updateBoard(Long boardId, String content, List<MultipartFile> images, Double latitude, Double longitude, List<String> tags) throws BaseException {
 
         try {
             Optional<Board> findBoard = boardRepository.findById(boardId);
@@ -240,33 +242,25 @@ public class BoardService {
                 if (content != null || content.equals("")) { // 내용 변경
                     board.setContent(content);
                 }
+
+                if (latitude != null ) {
+                    board.setLatitude(latitude);
+                }
+
+                if (longitude != null) {
+                    board.setLongitude(longitude);
+                }
+
+                if (tags.size() != 0) {
+                    board.setTags(tags);
+                }
+
                 if (images != null) {
 
-                    if (board.getBoardImageUrl().size() >= 3) {
-                        if(images.size() == 1){
+                    for (MultipartFile imageFile : images) {
 
-                        } else if (images.size() == 2) {
-
-                        } else {
-
-                        }
-
-                    } else {
-                        if(images.size() == 1){
-                            for (MultipartFile imageFile : images) {
-                                List<BoardImage> savedImages = saveImages(Collections.singletonList(imageFile),board);
-                                board.getBoardImage().addAll(savedImages);
-                            }
-                        } else if (images.size() == 2){
-                            for (MultipartFile imageFile : images) {
-                                List<BoardImage> savedImages = saveImages(Collections.singletonList(imageFile),board);
-                                board.getBoardImage().addAll(savedImages);
-                            }
-
-                        } else {
-
-                        }
-
+                        List<BoardImage> savedImages = saveImagesFix(Collections.singletonList(imageFile),board);
+                        board.getBoardImage().addAll(savedImages);
                     }
 
                 }
@@ -284,6 +278,9 @@ public class BoardService {
                 boardRes.setCreatedAt(board.getCreatedAt());
                 boardRes.setUpdatedAt(board.getUpdatedAt());
                 boardRes.setBoardImageUrl(board.getBoardImageUrl());
+                boardRes.setLatitude(board.getLatitude());
+                boardRes.setLongitude(board.getLongitude());
+                boardRes.setTags(board.getTags());
 
                 return boardRes;
 
@@ -323,6 +320,41 @@ public class BoardService {
     //이미지 저장
     public List<BoardImage> saveImages(List<MultipartFile> imageFiles, Board board) {
         List<BoardImage> images = new ArrayList<>();
+
+        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\templates\\image\\";
+
+
+        for (MultipartFile imageFile : imageFiles) {
+            UUID uuid = UUID.randomUUID();
+            String originalFileName = uuid + "_" + imageFile.getOriginalFilename();
+            File saveFile = new File(projectPath + originalFileName);
+
+            BoardImage image = new BoardImage();
+
+            // 이미지 파일 저장 로직
+            try {
+                imageFile.transferTo(saveFile);
+
+                image.setImgName(originalFileName);
+                image.setImgOriName(imageFile.getOriginalFilename());
+                image.setImgPath(saveFile.getAbsolutePath());
+                image.setBoard(board);
+
+                images.add(image); // 이미지 객체를 리스트에 추가
+
+            } catch (IOException e) {
+                throw new RuntimeException("이미지 저장에 실패하였습니다.", e);
+            }
+        }
+        boardImageRepository.saveAll(images);
+
+
+        return images;
+    }
+
+    //이미지 수정
+    public List<BoardImage> saveImagesFix(List<MultipartFile> imageFiles, Board board) {
+        List<BoardImage> images = boardImageRepository.findByBoard(board);
 
         String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\templates\\image\\";
 

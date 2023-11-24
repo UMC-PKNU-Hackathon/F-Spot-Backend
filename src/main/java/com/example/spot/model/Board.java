@@ -70,6 +70,12 @@ public class Board {
     }
 
 
+    @ElementCollection
+    @CollectionTable(name = "hashtags", joinColumns = @JoinColumn(name = "boardId"))
+    @Column(name = "tags")
+    private List<String> tags;  //해시태그
+
+
     public void likeChange(Integer likeCnt) {
         this.likeCnt = likeCnt;
     }
