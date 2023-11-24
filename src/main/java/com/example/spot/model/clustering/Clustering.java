@@ -1,33 +1,33 @@
 package com.example.spot.model.clustering;
 
-import com.example.spot.model.Pin;
+import com.example.spot.model.Marker;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Clustering {
-    protected List<Pin> pins;
+    protected List<Marker> markers;
     protected List<Cluster> clusters = new ArrayList<>();
 
-    public abstract List<Pin> run(Long mapSize);
+    public abstract List<Marker> run(Long mapSize);
 
     protected static class Cluster {
-        private final Pin center;
-        private final List<Pin> locations = new ArrayList<>();
+        private final Marker center;
+        private final List<Marker> locations = new ArrayList<>();
 
-        public Cluster(Pin center) {
+        public Cluster(Marker center) {
             this.center = center;
         }
 
-        public void addLocation(Pin pin) {
-            locations.add(pin);
+        public void addLocation(Marker marker) {
+            locations.add(marker);
         }
 
-        public Pin getCenter() {
+        public Marker getCenter() {
             return center;
         }
 
-        public List<Pin> getLocations() {
+        public List<Marker> getLocations() {
             return locations;
         }
     }

@@ -1,16 +1,16 @@
 package com.example.spot.repository;
 
-import com.example.spot.model.Pin;
+import com.example.spot.model.Marker;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface PinRepository {
+public interface MarkerRepository {
     // 서버 상의 모든 핀을 받아온다.
-    Pin findById(Long id);
+    Marker findById(Long id);
 
-    List<Pin> findAll();
+    List<Marker> findAll();
 
-    void add(Pin pin);
+    void add(Marker marker);
 }

@@ -1,7 +1,6 @@
 package com.example.spot.model.clustering;
 
-import com.example.spot.model.Location;
-import com.example.spot.model.Pin;
+import com.example.spot.model.Marker;
 
 import java.util.List;
 
@@ -9,31 +8,31 @@ public final class KMeansClustering extends Clustering {
     private static final double EARTH_RADIUS = 6371.01;
     private final double threshold;
 
-    public KMeansClustering(List<Pin> pins, double threshold) {
-        this.pins = pins;
+    public KMeansClustering(List<Marker> markers, double threshold) {
+        this.markers = markers;
         this.threshold = threshold;
     }
 
     @Override
-    public List<Pin> run(Long mapSize) {
-        for (Pin pin : pins) {
+    public List<Marker> run(Long mapSize) {
+        for (Marker marker : markers) {
             boolean addedToCluster = false;
 
             // 기존 클러스터 중 가장 가까운 클러스터에 위치 추가
-            addedToCluster = isAddedToCluster(pin, addedToCluster);
+            addedToCluster = isAddedToCluster(marker, addedToCluster);
 
             // 가까운 클러스터가 없을 경우 새로운 클러스터 생성
             if (!addedToCluster) {
-                createCluster(pin);
+                createCluster(marker);
             }
         }
         return convertToPin();
     }
 
-    private boolean isAddedToCluster(Pin pin, boolean addedToCluster) {
+    private boolean isAddedToCluster(Marker marker, boolean addedToCluster) {
         for (Cluster cluster : clusters) {
-            if (distance(pin, cluster.getCenter()) <= threshold) {
-                cluster.addLocation(pin);
+            if (distance(marker, cluster.getCenter()) <= threshold) {
+                cluster.addLocation(marker);
                 addedToCluster = true;
                 break;
             }
@@ -41,29 +40,29 @@ public final class KMeansClustering extends Clustering {
         return addedToCluster;
     }
 
-    private void createCluster(Pin pin) {
-        Cluster newCluster = new Cluster(pin);
+    private void createCluster(Marker marker) {
+        Cluster newCluster = new Cluster(marker);
         clusters.add(newCluster);
     }
 
-    private List<Pin> convertToPin() {
+    private List<Marker> convertToPin() {
         return clusters.stream()
                 .map(Cluster::getCenter)
                 .toList();
     }
 
-    private double distance(Pin pin1, Pin pin2) {
-        if (!pin1.mapType().equals(pin2.mapType())) {
+    private double distance(Marker marker1, Marker marker2) {
+        if (!marker1.getMapType().equals(marker2.getMapType())) {
             return Integer.MAX_VALUE;
         }
-        return calculateDistance(pin1.location(), pin2.location());
+        return calculateDistance(marker1, marker2);
     }
 
-    private double calculateDistance(Location p1, Location p2) {
-        double latitude1 = p1.latitude();
-        double longitude1 = p1.longitude();
-        double latitude2 = p2.latitude();
-        double longitude2 = p2.longitude();
+    private double calculateDistance(Marker p1, Marker p2) {
+        double latitude1 = p1.getLatitude();
+        double longitude1 = p1.getLongitude();
+        double latitude2 = p2.getLatitude();
+        double longitude2 = p2.getLongitude();
 
         double a = Math.pow(Math.sin((latitude2 - latitude1) / 2), 2)
                 + Math.cos(latitude1) * Math.cos(latitude2)
