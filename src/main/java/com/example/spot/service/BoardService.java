@@ -77,52 +77,95 @@ public class BoardService {
             }
         }
     }
-//
-//    /* 나의 게시글 조회 */
-//    public List<BoardRes> getMyBoards(Long idx) throws BaseException {
-//        try {
-//            Optional<User> userOptional = userRepository.findById(idx);
-//
-//            if (userOptional.isPresent()) {
-//                User user = userOptional.get();
-//                List<BoardRes> myBoards =
-//                        boardRepository.findBoardByUser(user)
-//                                .stream()
-//                                .map(BoardRes::new)
-//                                .toList();
-//
-//                if (myBoards.isEmpty()) {
-//                    throw new BaseException(SHOW_FAIL_BOARD);
-//                }
-//
-//                return myBoards;
-//            } else {
-//                // 사용자를 찾지 못한 경우 에러 처리
-//                throw new BaseException(USERS_NOT_EXISTS);
-//            }
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-//
-//    /* boardId로 게시글 조회 */
-//    public Board getBoardByBoardId(Long boardId, Long idx) throws BaseException {
-//        try {
-//            Optional<Board> findBoard = this.boardRepository.findByBoardId(boardId);
-//            if (findBoard.isPresent()) {
-//                Board board = findBoard.get();
-//                if (!idx.equals(findBoard.get().getUser().getId())) {
-//                    board.setHits(board.getHits() + 1); // 조회수 증가
-//                }
-//                this.boardRepository.save(board);
-//                return board;
-//            } else {
-//                throw new BaseException(BOARD_NOT_EXISTS);
-//            }
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+
+    /* 나의 게시글 조회 */
+    public List<BoardResponse> getMyBoards(Long idx) throws BaseException {
+        try {
+            Optional<User> userOptional = userRepository.findById(idx);
+
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                List<Board> boards = boardRepository.findBoardByUserOrderByLikeCntDesc(user);
+
+                if (boards.isEmpty()) {
+                    throw new BaseException(SHOW_FAIL_BOARD);
+                }
+
+                List<BoardResponse> boardResponses = new ArrayList<>();
+                for (Board board : boards) {
+                    BoardResponse boardResponse = new BoardResponse();
+                    boardResponse.setBoardId(board.getBoardId());
+                    boardResponse.setNickname(board.getUser().getNickname());
+                    boardResponse.setContent(board.getContent());
+                    boardResponse.setHits(board.getHits());
+                    boardResponse.setLikeCnt(board.getLikeCnt());
+                    boardResponse.setCreatedAt(board.getCreatedAt());
+                    boardResponse.setUpdatedAt(board.getUpdatedAt());
+                    boardResponse.setBoardImageUrl(board.getBoardImageUrl());
+                    boardResponse.setLatitude(board.getLatitude());
+                    boardResponse.setLongitude(board.getLongitude());
+                    boardResponse.setTags(board.getTags());
+
+                    //색상 코드 반환
+                    boardResponse.setColors(colorToTags(board.getTags()));
+
+                    boardResponses.add(boardResponse);
+                }
+
+                return boardResponses;
+            } else {
+                // 사용자를 찾지 못한 경우 에러 처리
+                throw new BaseException(USERS_NOT_EXISTS);
+            }
+        } catch (BaseException exception) {
+            if(exception.getStatus().equals(USERS_NOT_EXISTS)){
+                throw exception;
+            } else {
+                throw new BaseException(DATABASE_ERROR);
+            }
+        }
+    }
+
+    /* boardId로 게시글 조회 */
+    public BoardResponse getBoardByBoardId(Long boardId, Long idx) throws BaseException {
+        try {
+            Optional<Board> findBoard = this.boardRepository.findByBoardId(boardId);
+            if (findBoard.isPresent()) {
+                Board board = findBoard.get();
+                if (!idx.equals(findBoard.get().getUser().getId())) {
+                    board.setHits(board.getHits() + 1); // 조회수 증가
+                }
+                this.boardRepository.save(board);
+
+                BoardResponse boardResponse = new BoardResponse();
+                boardResponse.setBoardId(board.getBoardId());
+                boardResponse.setNickname(board.getUser().getNickname());
+                boardResponse.setContent(board.getContent());
+                boardResponse.setHits(board.getHits());
+                boardResponse.setLikeCnt(board.getLikeCnt());
+                boardResponse.setCreatedAt(board.getCreatedAt());
+                boardResponse.setUpdatedAt(board.getUpdatedAt());
+                boardResponse.setBoardImageUrl(board.getBoardImageUrl());
+                boardResponse.setLatitude(board.getLatitude());
+                boardResponse.setLongitude(board.getLongitude());
+                boardResponse.setTags(board.getTags());
+
+                //색상 코드 반환
+                boardResponse.setColors(colorToTags(board.getTags()));
+
+                return boardResponse;
+
+            } else {
+                throw new BaseException(BOARD_NOT_EXISTS);
+            }
+        } catch (BaseException exception) {
+            if(exception.getStatus().equals(BOARD_NOT_EXISTS)){
+                throw exception;
+            } else {
+                throw new BaseException(DATABASE_ERROR);
+            }
+        }
+    }
 //
 //    /* 게시글 정렬 */
 //    public List<BoardRes> getBoardByOrderByHitsDesc() throws BaseException { // 조회 수
@@ -212,6 +255,8 @@ public class BoardService {
                 board.setLatitude(latitude);
                 board.setLongitude(longitude);
                 board.setTags(tags);
+                board.setHits(0);
+                board.setLikeCnt(0);
 
                 if (images != null) {
                     for (MultipartFile imageFile : images) {

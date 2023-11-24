@@ -2,6 +2,7 @@ package com.example.spot.controller;
 
 import com.example.spot.config.exception.BaseException;
 import com.example.spot.config.exception.BaseResponse;
+import com.example.spot.model.Board;
 import com.example.spot.model.DTO.BoardRes;
 import com.example.spot.model.DTO.BoardResponse;
 import com.example.spot.service.BoardService;
@@ -62,73 +63,67 @@ public class BoardController {
         try {
             List<BoardResponse> boards = boardService.getBoards();
             return new BaseResponse<>(boards);
-        } catch (Exception e) {
-            return new BaseResponse<>(RESPONSE_ERROR);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
         }
     }
-//
-//    /**
-//     * 나의 게시글 조회 api
-//     * [GET] /board/myboard?userId={userId}
-//     *
-//     * @return BaseResponse<List>
-//     */
-//    @GetMapping("/myboard")
-//    @ApiOperation(value="나의 게시글 조회", notes="내가 작성한 게시글(리스트)을 조회한다.")
-//    @ApiResponses(value={@ApiResponse(code = 2010, message = "유저 아이디 값을 확인해주세요."),
-//            @ApiResponse(code = 2011, message = "존재하지 않는 유저입니다."),
-//            @ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
-//            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다."),
-//            @ApiResponse(code = 4023, message = "게시판 조회 실패")})
-//    public BaseResponse<List<BoardRes>> getMyBoards() {
-//        try {
-//            Long idx = jwtService.getUserIdx();
-//            if (idx == 0) {
-//                return new BaseResponse<>(USERS_EMPTY_USER_ID);
-//            }
-//            List<BoardRes> myBoards = boardService.getMyBoards(idx);
-//            return new BaseResponse<>(myBoards);
-//        } catch (Exception e) {
-//            return new BaseResponse<>(RESPONSE_ERROR);
-//        }
-//    }
-//
-//    /**
-//     * boardId로 게시글 조회 api
-//     * [GET] /board/boardId={boardId}
-//     *
-//     * @return BaseResponse<Board> or <BoardRes>
-//     */
-//    @GetMapping("/boardId={boardId}")
-//    @ApiOperation(value="게시글 조회", notes="boardId로 게시글을 조회한다. \n headers = {\"X-ACCESS-TOKEN\": jwt}; 설정해주기(jwt는 로그인하면 반환되는 jwt이다.")
-//    @ApiResponses(value={@ApiResponse(code = 2000, message = "입력값을 확인해주세요."),
-//            @ApiResponse(code = 2010, message = "유저 아이디 값을 확인해주세요."),
-//            @ApiResponse(code = 2011, message = "존재하지 않는 유저입니다."),
-//            @ApiResponse(code = 2061, message = "존재 하지 않거나 삭제된 게시글 입니다."),
-//            @ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
-//            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다.")
-//    })
-//    public BaseResponse<BoardRes> getBoardByBoardId(@PathVariable Long boardId) {
-//        try {
-//            Long idx = jwtService.getUserIdx();
-//            if (idx == 0) {
-//                return new BaseResponse<>(USERS_EMPTY_USER_ID);
-//            }
-//
-//            if (boardId == null) {
-//                return new BaseResponse<>(REQUEST_ERROR);
-//            }
-//
-//            Board board = boardService.getBoardByBoardId(boardId, idx);
-////            if (board == null) {
-////                return new BaseResponse<>(BOARD_NOT_EXISTS);
-////            }
-//            BoardRes boardRes = new BoardRes(board);
-//            return new BaseResponse<>(boardRes);
-//        } catch (Exception exception) {
-//            return new BaseResponse<>(RESPONSE_ERROR);
-//        }
-//    }
+
+    /**
+     * 나의 게시글 조회 api
+     * [GET] /board/myboard?
+     *
+     * @return BaseResponse<List>
+     */
+    @GetMapping("/myboard")
+    @ApiOperation(value="나의 게시글 조회", notes="내가 작성한 게시글(리스트)을 조회한다.")
+    @ApiResponses(value={@ApiResponse(code = 2010, message = "유저 아이디 값을 확인해주세요."),
+            @ApiResponse(code = 2011, message = "존재하지 않는 유저입니다."),
+            @ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
+            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다."),
+            @ApiResponse(code = 4023, message = "게시판 조회 실패")})
+    public BaseResponse<List<BoardResponse>> getMyBoards() {
+        try {
+            Long idx = jwtService.getUserIdx();
+            if (idx == 0) {
+                return new BaseResponse<>(USERS_EMPTY_USER_ID);
+            }
+            List<BoardResponse> myBoards = boardService.getMyBoards(idx);
+            return new BaseResponse<>(myBoards);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    /**
+     * boardId로 게시글 조회 api
+     * [GET] /board/boardId={boardId}
+     *
+     * @return BaseResponse<Board> or <BoardRes>
+     */
+    @GetMapping("/{boardId}")
+    @ApiOperation(value="게시글 조회", notes="boardId로 게시글을 조회한다. \n headers = {\"X-ACCESS-TOKEN\": jwt}; 설정해주기(jwt는 로그인하면 반환되는 jwt이다.")
+    @ApiResponses(value={@ApiResponse(code = 2000, message = "입력값을 확인해주세요."),
+            @ApiResponse(code = 2010, message = "유저 아이디 값을 확인해주세요."),
+            @ApiResponse(code = 2011, message = "존재하지 않는 유저입니다."),
+            @ApiResponse(code = 2061, message = "존재 하지 않거나 삭제된 게시글 입니다."),
+            @ApiResponse(code = 3000, message = "값을 불러오는데 실패하였습니다."),
+            @ApiResponse(code = 4000, message = "데이터베이스 연결에 실패하였습니다.")
+    })
+    public BaseResponse<BoardResponse> getBoardByBoardId(@PathVariable Long boardId) {
+        try {
+            Long idx = jwtService.getUserIdx();
+
+            if (boardId == null) {
+                return new BaseResponse<>(REQUEST_ERROR);
+            }
+
+            BoardResponse board = boardService.getBoardByBoardId(boardId, idx);
+
+            return new BaseResponse<>(board);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 //
 //    // ==================================================================================
 //

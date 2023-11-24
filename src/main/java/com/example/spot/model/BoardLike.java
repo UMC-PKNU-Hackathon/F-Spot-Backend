@@ -24,7 +24,7 @@ public class BoardLike {
 
     // 다대일 관계 설정: 한 개의 Like는 하나의 Board와 관련됨
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boardId")
+    @JoinColumn(name = "board_id")
     private Board board;
 
     private Long checkLike;

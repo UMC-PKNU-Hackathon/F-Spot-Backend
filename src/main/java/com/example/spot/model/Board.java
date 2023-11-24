@@ -21,7 +21,7 @@ import java.util.List;
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "boardId", nullable = false)
+    @Column(name = "board_id", nullable = false)
     private Long boardId;
 
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -71,7 +71,7 @@ public class Board {
 
 
     @ElementCollection
-    @CollectionTable(name = "hashtags", joinColumns = @JoinColumn(name = "boardId"))
+    @CollectionTable(name = "hashtags", joinColumns = @JoinColumn(name = "board_id"))
     @Column(name = "tags")
     private List<String> tags;  //해시태그
 
