@@ -40,7 +40,6 @@ public class Board {
     private List<BoardLike> boardLikes;       // 좋아요
     private Integer likeCnt;        // 좋아요 수
 
-
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @Column(name = "created_at")
     private Timestamp createdAt;
@@ -49,9 +48,9 @@ public class Board {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    @OneToMany(mappedBy = "board", orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<BoardImage> boardImage;
+    private List<BoardImage> boardImage = new ArrayList<>();
 
     @Transient
     private List<String> boardImageUrl;
@@ -74,7 +73,5 @@ public class Board {
     public void likeChange(Integer likeCnt) {
         this.likeCnt = likeCnt;
     }
-
-
 
 }

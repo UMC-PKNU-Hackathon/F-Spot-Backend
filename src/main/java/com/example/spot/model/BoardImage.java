@@ -36,7 +36,6 @@ public class BoardImage {
 
     // 이미지 URL을 반환하는 메서드
     public String getUrl() {
-
         return "http://localhost:8080/board/images/"+this.imgPath;
     }
 
