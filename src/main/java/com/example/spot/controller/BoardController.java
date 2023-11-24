@@ -337,7 +337,7 @@ public class BoardController {
     //이미지 네임을 알 수 있음 그 거를 기반으로 이미지 조회하기
     //http://localhost:8080/board/images/7f658d91-ef68-4b59-a381-af5bc9938768_fighting.png
     @ResponseBody
-    @GetMapping("/board/images/{imageName}")
+    @GetMapping("/images/{imageName}")
     @ApiOperation(value="리뷰 이미지 조회", notes="이미지 조회할 때 url을 여기다가 붙여서 get 보내셈 \n 근데, localhost를 (?)으로 변경해야함!")
     public ResponseEntity<byte[]> getReviewImage(@PathVariable String imageName) {
         String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\templates\\image\\";
