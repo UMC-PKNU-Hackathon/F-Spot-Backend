@@ -15,9 +15,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    private static final String API_NAME = "HANSANG API";
+    private static final String API_NAME = "Spot API";
     private static final String API_VERSION = "0.0.1";
-    private static final String API_DESCRIPTION = "한상 API 명세서";
+    private static final String API_DESCRIPTION = "Spot API 명세서";
 
 
     /**
@@ -35,7 +35,7 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false)
                 .groupName(API_VERSION)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("doubleni.mealrecipe"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.spot"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
