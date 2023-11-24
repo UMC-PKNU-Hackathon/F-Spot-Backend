@@ -1,4 +1,11 @@
 spring:
+
+  data:
+    redis:
+      port:
+      host:
+      password:
+
   datasource:
     url:
     username:
@@ -39,6 +46,7 @@ spring:
         location: C:/Temp
         max-file-size: 100MB
         max-request-size: 100MB
+
 
 
 jwt:
