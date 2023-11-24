@@ -43,22 +43,12 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_PHONENO(false, 2026, "휴대폰 번호는 숫자만 입력이 가능합니다."),
     POST_USERS_INVALID_PHONENO_LENGTH(false, 2027, "휴대폰 번호는 최대 11자리까지 입력이 가능합니다."),
 
-    // reviews
-    POST_REVIEWS_INVALID_CONTENT(false,2030, "최대 입력 글자 수는 1000자입니다."),
-    DELETE_FAIL_REVIEW(false, 2031, "리뷰를 삭제하지 못했습니다."),
-    REVIEWS_EMPTY_REVIEW_ID(false,2032,"존재하지 않거나 삭제된 리뷰입니다."),
-    POST_REVIEWS_NO_CONTEXT(false,2033,"리뷰 내용을 입력해주세요."),
-    POST_REVIEWS_NO_RATINGS(false,2034,"리뷰 평점을 입력해주세요."),
-    POST_REVIEWS_FAILS(false,2035,"리뷰 작성 실패하였습니다."),
-    REVIEW_NO_EXISTS(false,2036,"저장된 리뷰가 없습니다."),
-    REVIEW_ALREADY_EXISTS(false,2037,"이미 작성한 리뷰가 존재합니다."),
 
     // category
     CATEGORIES_EMPTY_CATEGORY(false, 2040, "존재하지 않는 카테고리입니다."),
+    POST_LATITUDE_EMPTY(false, 2041, "위도를 입력해주세요."),
+    POST_LONGITUDE_EMPTY(false, 2042, "경도를 입력해주세요."),
 
-    // recipe
-    RECIPE_NOT_EXISTS(false, 2050, "존재하지 않는 레시피입니다."),
-    RECIPE_ID_NO_EXISTS(false,2051,"레시피 아이디를 입력해주세요"),
 
     // board
     POST_BOARD_FAILS(false, 2060, "게시글 등록을 실패하였습니다."),
