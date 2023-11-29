@@ -5,10 +5,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
 </head>
 <div id="header" align="center">
+
+<img width="329" alt="image" src="src/main/resources/templates/image/spot-logo.png"><br><br>
 <h1><a href="https://www.notion.so/Spot-team-66ce6dfe5ec9402dbd00595cbab7b441">Spot</a></h1>
-
-<img width="329" alt="image" src="src/main/resources/templates/image/spot-logo.png"><br>
-
 <font size=3><b>찍을수록 커지는 스팟</b></font><br>
 "지도 상에서 사용자가 발견한 동네 소식 및 이벤트를 마커로 찍어 실시간으로 공유하는 플랫폼"<br>
 다량의 마커는 하나의 스팟이 되어 사용자에게 더욱 눈에 띄게 전달되며, 이를 통해 지역 사회의 소식을 신속하게 공유하고 활성화시키는 것이 목표입니다.
@@ -110,7 +109,6 @@
 
 <div>
 <h2>⚙️ 서비스 소개</h2>
-<hr>
 
 <h5> ✔️ 부산에서 일어나는 다양한 이슈들을 지도에 마커를 찍어 공유하는 플랫폼 </h5>
 
@@ -127,7 +125,6 @@
 
 <div>
 <h2>👀 핵심 기능 소개</h2>
-<hr
 
 <h5> ⭐ 로그인 및 회원가입 </h5>
 <li>자체 및 카카오 로그인을 통해 사용자를 인증함</li>
