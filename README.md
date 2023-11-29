@@ -173,9 +173,9 @@
 <div id="index03">
 <h2> ️️🖥️ 활동 주소</h2>
 
-> **notion 주소** : [https://www.notion.so/Spot-team-66ce6dfe5ec9402dbd00595cbab7b441]() <br>
-> **프론트 github** : [https://github.com/UMC-PKNU-Hackathon/F-Spot-Frontend]() <br>
-> **백엔드 github** : [https://github.com/UMC-PKNU-Hackathon/F-Spot-Backend]() <br>
+> **notion 주소** : [https://www.notion.so/Spot-team-66ce6dfe5ec9402dbd00595cbab7b441](https://www.notion.so/Spot-team-66ce6dfe5ec9402dbd00595cbab7b441) <br>
+> **프론트 github** : [https://github.com/UMC-PKNU-Hackathon/F-Spot-Frontend](https://github.com/UMC-PKNU-Hackathon/F-Spot-Frontend) <br>
+> **백엔드 github** : [https://github.com/UMC-PKNU-Hackathon/F-Spot-Backend](https://github.com/UMC-PKNU-Hackathon/F-Spot-Backend) <br>
 
 </div>
 
