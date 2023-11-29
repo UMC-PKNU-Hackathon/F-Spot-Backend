@@ -77,10 +77,10 @@
     <td>이승현</td>
 </tr>
 <tr>
-    <td><img width="160px" alt="image" src="https://github.com/downfa11.png" /></td>
-    <td><img width="160px" alt="image" src="https://github.com/YuneeeM.png" /></td>
-    <td><img width="160px" alt="image" src="https://github.com/howudong.png" /></td>
-    <td><img width="160px" alt="image" src="https://github.com/mimpie.png" /></td>
+    <td><img width="100px" alt="image" src="https://github.com/downfa11.png" /></td>
+    <td><img width="100px" alt="image" src="https://github.com/YuneeeM.png" /></td>
+    <td><img width="100px" alt="image" src="https://github.com/howudong.png" /></td>
+    <td><img width="100px" alt="image" src="https://github.com/mimpie.png" /></td>
 </tr>
 <tr align="center">
     <td><a href="https://github.com/downfa11">@downfa11</a></td>
