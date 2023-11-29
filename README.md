@@ -16,6 +16,7 @@
 </div>
 
 <br>
+<br>
 
 
 <div>
@@ -29,6 +30,7 @@
 </ul>
 </div>
 
+<br>
 <br>
 
 <div>
@@ -56,9 +58,8 @@
 
 </div>
 
-
 <br>
-
+<br>
 
 <div id="index01">
 <h2>👯 Spot 팀 소개 </h2>
@@ -93,6 +94,7 @@
 
 </div>
 
+<br>
 <br>
 
 <div>
@@ -155,6 +157,7 @@
 </div>
 
 <br>
+<br>
 
 
 <div>
@@ -162,6 +165,7 @@
 <img width="500" alt="image03" src="src/main/resources/templates/image/flowchart.png">
 </div>
 
+<br>
 <br>
 
 
