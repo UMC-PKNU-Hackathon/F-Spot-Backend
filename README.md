@@ -83,12 +83,14 @@
     <td><img width="100px" alt="image" src="https://github.com/YuneeeM.png" /></td>
     <td><img width="100px" alt="image" src="https://github.com/howudong.png" /></td>
     <td><img width="100px" alt="image" src="https://github.com/mimpie.png" /></td>
+    <td><img width="100px" alt="image" src="https://github.com/anminster.png" /></td>
 </tr>
 <tr align="center">
     <td><a href="https://github.com/downfa11">@downfa11</a></td>
     <td><a href="https://github.com/YuneeeM">@YuneeeM</a></td>
     <td><a href="https://github.com/howudong">@howudong</a></td>
     <td><a href="https://github.com/mimpie">@mimpie</a></td>
+    <td><a href="https://github.com/mimpie">@anminster</a></td>
 </tr>
 </table>
 
